@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 public class Planet : MonoBehaviour {
-	public float speed = 1f;
 	public GameObject tile;
+	private GameObject selected_face = null;
 	private const float phi = 1.618f; //Golden ratio
 	private GameObject[] faces;
 	private static Vector3[] rotations = new Vector3[]{
@@ -22,32 +23,43 @@ public class Planet : MonoBehaviour {
 		new Vector3(0, -90, -90 ),
 		new Vector3(0, 90, 90 ),
 	};
-	public GameObject selected_face;
 
 	// Use this for initialization
 	void Start () {
+		faces = new GameObject[12];
 		for(int i=0;i<12;i++){
-			create(i);
+			faces[i] = create(i);
 		}
 	}
-
 	// Update is called once per frame
 	void Update () {
 		Ray ray;
     RaycastHit hit;
-		if (Input.GetMouseButton(1)){
+		if (Input.GetMouseButtonUp(0)){
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
       if(Physics.Raycast(ray, out hit)){
-				selected_face = hit.collider.gameObject;
-        Debug.Log(selected_face.name);
+				GameObject o = hit.collider.gameObject;
+				if (Array.Exists(faces, e => e.GetInstanceID() == o.GetInstanceID())){
+					this.select(o);
+				}
+
       }
 		}
 	}
-
+	void select(GameObject o){
+		Renderer r = o.GetComponent<Renderer>();
+		if (selected_face != null){
+			selected_face.GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
+		}
+		Debug.Log("Selecting : "+ o.name);
+		r.material.EnableKeyword("_EMISSION");
+		selected_face = o;
+	}
 	GameObject create(int i){
 		GameObject res = Instantiate(this.tile, new Vector3(0, 0, 0), Quaternion.identity, transform);
 		res.transform.Rotate(rotations[i],Space.Self);
 		res.name = "face_"+i;
+		res.GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
 		return res;
 	}
 
