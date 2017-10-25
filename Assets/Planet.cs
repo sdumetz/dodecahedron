@@ -46,6 +46,7 @@ public class Planet : MonoBehaviour {
       }
 		}
 	}
+
 	void select(GameObject o){
 		Renderer r = o.GetComponent<Renderer>();
 		if (selected_face != null){
@@ -55,6 +56,7 @@ public class Planet : MonoBehaviour {
 		r.material.EnableKeyword("_EMISSION");
 		selected_face = o;
 	}
+	
 	GameObject create(int i){
 		GameObject res = Instantiate(this.tile, new Vector3(0, 0, 0), Quaternion.identity, transform);
 		res.transform.Rotate(rotations[i],Space.Self);
