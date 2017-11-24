@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 
-public class Planet : MonoBehaviour {
+public class Planet : MonoBehaviour, ISelectHandler {
 	public GameObject tile;
 	private GameObject selected_face = null;
 	private const float phi = 1.618f; //Golden ratio
@@ -32,6 +33,7 @@ public class Planet : MonoBehaviour {
 		}
 	}
 	// Update is called once per frame
+	/*
 	void Update () {
 		Ray ray;
     RaycastHit hit;
@@ -45,8 +47,10 @@ public class Planet : MonoBehaviour {
 
       }
 		}
+	}//*/
+	public void OnSelect(BaseEventData eventData){
+		Debug.Log("selected a planet");
 	}
-
 	void select(GameObject o){
 		Renderer r = o.GetComponent<Renderer>();
 		if (selected_face != null){

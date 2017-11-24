@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CamControl : MonoBehaviour {
 	public GameObject target;
@@ -17,8 +18,8 @@ public class CamControl : MonoBehaviour {
 		if (Input.GetMouseButton(0) && !Input.GetMouseButtonDown(0)){
 			float x = Input.GetAxis("Mouse X");
 			float y = Input.GetAxis("Mouse Y");
-			transform.RotateAround (point,new Vector3(0.0f,1.0f,0.0f),x*speedMod);
-			transform.RotateAround (point,-transform.right,y*speedMod);
+			transform.RotateAround (point,Vector3.up,x*speedMod);
+			transform.RotateAround (point,-transform.right,y*speedMod/4);
 		}
 	}
 }
